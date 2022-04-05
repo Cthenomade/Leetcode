@@ -1,0 +1,22 @@
+//方法一：
+class Solution {
+public:
+    //是否为质数的判断
+    bool isPrime(int n){
+        if(n < 2)   return false;
+        for(int i = 2;i * i <= n;i++){
+            if(n % i == 0)    return false;
+        }
+        return true;
+    }
+    int countPrimeSetBits(int left, int right) {
+        int ans = 0;
+        for(int i = left;i <= right;i++){
+            //__builtin_popcount()用于统计数转化为二进制后1的个数
+            if(isPrime(__builtin_popcount(i))){
+                ans++;
+            }
+        }
+        return ans;
+    }
+};
