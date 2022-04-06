@@ -1,0 +1,88 @@
+//思路: 找出树(其实也就是图)中距离最远的两个结点(设为x , y)，他们中点处的结点，即作为树的根结点
+//方法一：
+//通过查找距离图中任一结点(此处取0)距离最远的结点(x),再找到距离x最远的结点(y). 此时的x , y即为树(或者说图)中的距离最远结点。
+//再得到x , y之间的路径(利用父节点数组)即可得到所求结点
+class Solution {
+public:
+    //找出距离u最远的结点
+    int findLongestNode(int u,vector<int>& parent,vector<vector<int>>& adj){
+        int node = -1;
+        queue<int> q;
+        vector<bool> visit(adj.size(),false);
+        q.emplace(u);
+        visit[u] = true;        //忘了这一步！
+        while(!q.empty()){
+            int cur = q.front();
+            node = cur;
+            q.pop();
+            for(auto & n : adj[cur]){
+                if(!visit[n]){
+                    visit[n] = true;
+                    parent[n] = cur;
+                    q.emplace(n);
+                }
+            }
+        }
+        return node;
+    }
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        if(n == 1)  return {0};
+        vector<vector<int>> adj(n);
+        for(auto& edge : edges){ 
+            adj[edge[0]].emplace_back(edge[1]);
+            adj[edge[1]].emplace_back(edge[0]);
+        }
+        
+        vector<int> parent(n,-1);
+        int x = findLongestNode(0,parent,adj);
+        int y = findLongestNode(x,parent,adj);
+        vector<int> path;
+        parent[x] = -1;
+        while(y != -1){
+            path.emplace_back(y);
+            y = parent[y];
+        }
+        int m = path.size();
+        if(m & 1){
+            return {path[(m >> 1)]};
+        }else{
+            return {path[(m >> 1)],path[(m >> 1) - 1]};
+        }
+    }
+};
+//方法二：
+class Solution {
+public:
+    //从外向里不断剪掉外面的叶子，剩下“最里面的叶子”
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        if(n == 1)  return {0};
+        vector<vector<int>> adj(n);
+        vector<int> degree(n,0);
+        queue<int> q;
+        vector<int> res;
+        for(auto & e : edges){
+            adj[e[0]].emplace_back(e[1]);
+            adj[e[1]].emplace_back(e[0]);
+            degree[e[0]]++;
+            degree[e[1]]++;
+        }
+        for(int i = 0;i < n;i++)    if(degree[i] == 1)  q.emplace(i);
+        while(!q.empty()){
+            res.clear();
+            int sz = q.size();
+            for(int i = 0;i < sz;i++){
+                int out = q.front();
+                q.pop();
+                res.emplace_back(out);
+                degree[out]--;      //去掉out,out自己伸出去的degree被减掉
+                for(auto & mid : adj[out]){
+                    degree[mid]--;      //被out插入的degree被减掉
+                    if(degree[mid] == 1){
+                        q.emplace(mid);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
