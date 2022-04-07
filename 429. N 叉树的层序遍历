@@ -1,0 +1,25 @@
+class Solution {
+public:
+    //简单层序遍历
+    vector<vector<int>> levelOrder(Node* root) {
+        if(!root)   return {};
+        vector<vector<int>> res;
+        queue<Node*> qu;
+        qu.emplace(root);
+        while(!qu.empty()){
+            int sz = qu.size();
+            vector<int> cur;
+            for(int i = 0;i < sz;i++){
+                Node* p = qu.front();
+                qu.pop();
+                cur.emplace_back(p->val);
+                for(int j = 0;j < (p->children).size();j++){
+                    qu.emplace(p->children[j]);
+                }                
+            }
+            res.emplace_back(cur);
+        }
+
+        return res;
+    }
+};
