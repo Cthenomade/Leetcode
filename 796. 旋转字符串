@@ -1,0 +1,22 @@
+class Solution {
+public:
+    //tmp = s + s
+    //tmp中找goal
+    bool rotateString(string s, string goal) {
+        if(s.size() != goal.size()) return false;
+        string tmp = s + s;
+        int cnt = 0;
+        for(int i = 0;i < tmp.size();i++){
+            if(tmp[i] == goal[cnt]){
+                cnt++;
+            }else{
+                if(cnt != 0){
+                    i--;        //当前位置不匹配(前几个数字相等)，则停留在该位置不变，然后让goal从头开始
+                }
+                cnt = 0;
+            }
+            if(cnt == goal.size())  return true;
+        }
+        return false;
+    }
+};
