@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        int n = nums.size();
+        int minPos = n - 1,maxPos = 0;
+        int maxn = INT_MIN,minn = INT_MAX;
+        for(int i = 0;i < n;i++){
+            if(maxn > nums[i]){     //记录最后一个使nums不为递增数组的位置,下面同理
+                maxPos = i;
+            }else{
+                maxn = nums[i];
+            }
+            if(minn < nums[n - i - 1]){
+                minPos = n - i - 1;
+            }else{
+                minn = nums[n - i - 1];
+            }
+        }
+
+
+        if(maxPos - minPos <= 0)    return 0;
+        return maxPos - minPos + 1;
+    }
+};
