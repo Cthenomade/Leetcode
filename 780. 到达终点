@@ -1,0 +1,19 @@
+class Solution {
+public:
+    //从结果倒推答案。
+    //使用 % 的目的:将多次减法一次到位。(7 - 3 = 4,4 - 3 = 1;7 % 3 = 1)
+    bool reachingPoints(int sx, int sy, int tx, int ty) {
+        if(sx > tx || sy > ty)  return false;
+        if(tx > ty){
+            if(ty == sy){
+                return (tx - sx) % ty == 0;
+            }
+            return reachingPoints(sx,sy,tx % ty,ty);
+        }else if(tx < ty){
+            if(tx == sx){
+                return (ty - sy) % tx == 0;
+            }
+            return reachingPoints(sx,sy,tx,ty % tx);
+        }else return (sx == tx) && (tx == ty);
+    }
+};
