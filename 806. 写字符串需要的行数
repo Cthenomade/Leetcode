@@ -1,0 +1,15 @@
+class Solution {
+public:
+    vector<int> numberOfLines(vector<int>& widths, string s) {
+        int cot = 1,rest = 100;   //cot记录当前行数，rest记录当前行数剩余空位
+        for(auto &ch : s){
+            if(rest < widths[ch - 'a']){
+                ++cot;
+                rest = 100;
+            }
+            rest -= widths[ch - 'a'];
+        }
+
+        return {cot , 100 - rest};
+    }
+};
