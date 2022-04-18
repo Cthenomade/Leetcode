@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> lexicalOrder(int n) {
+        int num = 1;
+        vector<int> res(n);
+        for(int i  = 0;i < n;i++){
+            res[i] = num;
+            if(num * 10 <= n){
+                num *= 10;
+            }else{
+                //为什么是while,而不是if?
+                //答:例:199->2;这是因为但凡已经添加到'9'的位置，就说明这个位置已经“找到头了”。
+                while(num + 1 > n || num % 10 == 9){
+                    num /= 10;
+                }
+                num++;
+            }
+        }
+        return res;
+    }
+};
