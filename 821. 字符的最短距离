@@ -1,0 +1,25 @@
+class Solution {
+public:
+    //两次遍历，从前往后 + 从后往前(顺序随便)
+    //依据：只需比较其后一个c与其前一个c,哪一个最近.
+    vector<int> shortestToChar(string s, char c) {
+        int len = s.size();
+        int pre = -1;
+        vector<int> pos(len,-1);
+        for(int i = len - 1;i >= 0;i--){
+            if(s[i] == c){
+                pos[i] = 0;
+                pre = i;
+            }else if(pre != -1) pos[i] = pre - i;
+        }
+        pre = -1;
+        for(int i = 0;i < len;i++){
+            //从前往后，pre!=-1.说明该位置之前有c，只需将其与现有最近（其位置后面的第一个c）比较
+           if(pre != -1) pos[i] = min(i - pre,pos[i]);
+           if(pos[i] == -1) pos[i] = i - pre;
+           if(s[i] == c) pre = i; 
+        }
+
+        return pos;
+    }
+};
