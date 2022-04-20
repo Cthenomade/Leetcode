@@ -1,0 +1,35 @@
+class Solution {
+public:
+    // '\t'用来统计当前所处层数
+    //depth[i]为直到第i层为止的绝对路径
+    int lengthLongestPath(string input) {
+        int n = input.size();
+        int pos = 0, ans = 0;
+        vector<int> vec(n + 1);
+        while(pos < n){
+            int depth = 1;
+            while(input[pos] == '\t'){
+                depth++;
+                pos++;
+            }
+            int len = 0;
+            bool isFile = false;
+            while(input[pos] != '\n' && pos < n){
+                if(input[pos] == '.') isFile = true;
+                len++;
+                pos++;
+            }
+            pos++;
+            if(depth > 1){
+               len += vec[depth - 1] + 1; 
+            }
+            if(isFile)
+            {
+                ans = max(ans,len);
+            }else{
+                vec[depth] = len;
+            }
+        }
+        return ans;
+    }
+};
