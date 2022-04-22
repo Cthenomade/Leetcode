@@ -1,0 +1,22 @@
+class Solution {
+public:
+    //每次顺时针旋转一位，数组最后一个数回到第一个位置(下标为0)，其他所有数向后移动一个位置
+    //可以看作先把所有数都向后移动一位，再减去最后一个数的贡献(len * nums[len -1])
+    int maxRotateFunction(vector<int>& nums) {
+        int len = nums.size();
+        if(len == 1)    return 0;
+        int sum = 0,cur = 0,ans = 0;
+        for(int i = 0;i < len;i++){
+            sum += nums[i];
+            cur += i * nums[i];
+        }
+        ans = cur;
+        for(int i = len - 1;i >= 0;i--){
+            cur += sum;
+            cur -= len * nums[i];
+            ans = max(ans,cur);
+        }
+
+        return ans;
+    }
+};
