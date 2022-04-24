@@ -1,0 +1,28 @@
+class Solution {
+public:
+    //水塘抽样
+    //0 - i 中需要的数出现了 cnt 次,则若 rand() % cnt == 0,即选中了第cnt次。
+    vector<int> arr;
+    Solution(vector<int>& nums) {
+        arr = nums;
+    }
+    
+    int pick(int target) {
+        int ans;
+        for(int i = 0,cnt = 0;i < arr.size();i++){
+            if(arr[i] == target){
+                cnt++;
+                if(rand() % cnt == 0){
+                    ans = i;
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(nums);
+ * int param_1 = obj->pick(target);
+ */
